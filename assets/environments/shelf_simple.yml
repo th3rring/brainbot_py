@@ -1,0 +1,65 @@
+world:
+  collision_objects:
+    - header:
+        frame_id: base_link
+      id: Can1
+      primitives:
+        - type: cylinder
+          dimensions: [0.12, 0.03]
+      primitive_poses:
+        - position: [-0.2051155064823288, -0.8945103961207197, 0.9894245985519023]
+          orientation: [0.003668591976988595, -0.006868945190802125, -0.6468336920161407, 0.7625913282339636]
+    - header:
+        frame_id: base_link
+      id: Can2
+      primitives:
+        - type: cylinder
+          dimensions: [0.12, 0.03]
+      primitive_poses:
+        - position: [0.324586999053502, -0.588212664232026, 0.9894249293882645]
+          orientation: [0.006869311127300047, 0.003668204550349767, -0.6468337983327718, 0.7625912366231415]
+    - header:
+        frame_id: base_link
+      id: Can3
+      primitives:
+        - type: cylinder
+          dimensions: [0.12, 0.03]
+      primitive_poses:
+        - position: [0.1816279100849993, -0.9369161032116138, 0.9894245932680766]
+          orientation: [0.003668698241227037, -0.006868886858817932, -0.6468334356747057, 0.7625915456781514]
+    - header:
+        frame_id: base_link
+      id: small_shelf_bottom
+      primitives:
+        - type: box
+          dimensions: [1.2, 1, 0.04]
+      primitive_poses:
+        - position: [0.1174446400322713, -1.118754683892404, 0.8952272776428363]
+          orientation: [4.722691362071886e-07, -1.514493497833368e-09, -0.6467394178114397, 0.7627110366637531]
+    - header:
+        frame_id: base_link
+      id: small_shelf_side_left
+      primitives:
+        - type: box
+          dimensions: [1.2, 0.04, 0.44]
+      primitive_poses:
+        - position: [0.6107198092064712, -1.037026702133867, 1.095227638827112]
+          orientation: [4.722691362071886e-07, -1.514493497833368e-09, -0.6467394178114397, 0.7627110366637531]
+    - header:
+        frame_id: base_link
+      id: small_shelf_side_right
+      primitives:
+        - type: box
+          dimensions: [1.2, 0.04, 0.44]
+      primitive_poses:
+        - position: [-0.3758307744140781, -1.200482953031261, 1.095226916458382]
+          orientation: [4.722691362071886e-07, -1.514493497833368e-09, -0.6467394178114397, 0.7627110366637531]
+    - header:
+        frame_id: base_link
+      id: small_shelf_top
+      primitives:
+        - type: box
+          dimensions: [1.2, 1, 0.04]
+      primitive_poses:
+        - position: [0.1174443768343643, -1.11875465908957, 1.295227549520556]
+          orientation: [3.851491695738686e-07, -8.442712766782618e-08, -0.6467394178114712, 0.7627110366637707]

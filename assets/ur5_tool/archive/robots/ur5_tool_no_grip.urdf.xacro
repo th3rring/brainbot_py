@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="ur5">
+
+  <!-- common stuff -->
+  <xacro:include filename="$(find robowflex_resources)/ur/robots/common.gazebo.xacro" />
+
+  <!-- ur5 -->
+  <xacro:include filename="$(find robowflex_resources)/ur/robots/ur5.urdf.xacro" />
+
+  <!-- arm -->
+  <xacro:ur5_robot prefix="" joint_limited="true" />
+
+  <link name="world" />
+
+  <!-- attach the robot to the world -->
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link="base_link" />
+    <origin xyz="0 0.0 2.3" rpy="0 3.14 0" />
+  </joint>
+
+  <link name="tool">
+    <visual>
+      <geometry>
+        <cylinder radius="0.007" length="0.5" />
+      </geometry>
+      <material name="LightGrey">
+        <color rgba="0.7 0.7 0.7 1.0" />
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.007" length="0.5" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="tool_jt" type="fixed">
+    <origin xyz="0.4 0 0" rpy="3.142 -1.571 0" />
+    <parent link="ee_link" />
+    <child link="tool" />
+  </joint>
+
+  <link name="tool_tip" />
+
+  <joint name="tool_tip_jt" type="fixed">
+    <origin xyz="0 0 0.25" rpy="0 3.142 0" />
+    <!-- <origin xyz="0 0 0.25" rpy="0 0 -3.142" /> -->
+    <parent link="tool" />
+    <child link="tool_tip" />
+  </joint>
+
+</robot>
