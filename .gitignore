@@ -1,0 +1,31 @@
+
+.virtual_documents/notebooks/Grid Samplers.ipynb
+brainbot/__pycache__/__init__.cpython-310.pyc
+brainbot/__pycache__/__init__.cpython-39.pyc
+brainbot/constants/__pycache__/__init__.cpython-39.pyc
+brainbot/constants/__pycache__/math.cpython-39.pyc
+brainbot/kinematics/__pycache__/__init__.cpython-310.pyc
+brainbot/kinematics/__pycache__/__init__.cpython-39.pyc
+brainbot/kinematics/__pycache__/solvers.cpython-310.pyc
+brainbot/kinematics/__pycache__/solvers.cpython-39.pyc
+brainbot/plan/__pycache__/__init__.cpython-39.pyc
+brainbot/plan/__pycache__/regions.cpython-39.pyc
+brainbot/plan/__pycache__/samplers.cpython-39.pyc
+brainbot/utils/__pycache__/__init__.cpython-310.pyc
+brainbot/utils/__pycache__/__init__.cpython-39.pyc
+brainbot/utils/__pycache__/tf.cpython-310.pyc
+brainbot/utils/__pycache__/tf.cpython-39.pyc
+brainbot/viz/__pycache__/__init__.cpython-310.pyc
+brainbot/viz/__pycache__/__init__.cpython-39.pyc
+brainbot/viz/__pycache__/markers.cpython-310.pyc
+brainbot/viz/__pycache__/markers.cpython-39.pyc
+brainbot.egg-info/PKG-INFO
+brainbot.egg-info/SOURCES.txt
+brainbot.egg-info/dependency_links.txt
+brainbot.egg-info/requires.txt
+brainbot.egg-info/top_level.txt
+notebooks/.ipynb_checkpoints/Cell Sampling-checkpoint.ipynb
+notebooks/.ipynb_checkpoints/Grid Samplers-checkpoint.ipynb
+notebooks/.ipynb_checkpoints/TestMoveit-checkpoint.ipynb
+notebooks/.ipynb_checkpoints/TestTFs-checkpoint.ipynb
+notebooks/.ipynb_checkpoints/start_jupyter-checkpoint.sh
