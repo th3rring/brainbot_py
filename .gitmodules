@@ -1,0 +1,12 @@
+[submodule "grapeshot"]
+	path = grapeshot
+	url = git@github.com:KavrakiLab/grapeshot.git
+[submodule "submodules/grapeshot"]
+	path = submodules/grapeshot
+	url = git@github.com:KavrakiLab/grapeshot.git
+[submodule "submodules/ikfastpy"]
+	path = submodules/ikfastpy
+	url = https://github.com/andyzeng/ikfastpy.git
+[submodule "submodules/ur_ikfast"]
+	path = submodules/ur_ikfast
+	url = https://github.com/cambel/ur_ikfast.git
