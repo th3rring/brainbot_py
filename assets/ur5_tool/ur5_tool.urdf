@@ -283,7 +283,7 @@
     </inertial>
   </link>
   <joint name="tool_jt" type="fixed">
-    <origin rpy="3.142 -1.571 0" xyz="0.4 0 0"/>
+    <origin rpy="3.142 -1.571 0" xyz="0.28 0 0"/>
     <parent link="ee_link"/>
     <child link="tool"/>
   </joint>
