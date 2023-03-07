@@ -1,11 +1,17 @@
 from .regions import Cyl
+from brainbot.utils import tf
+from brainbot.kinematics import Ur5Kinematics
+from brainbot.viz import markers
+
 import numpy as np
+from numpy.random import default_rng
+from typing import Callable
+from collections import deque
 
 
 class DeterministicGridSampler:
 
     def __init__(self, lower: np.array, upper: np.array, res: np.array):
-
         # Convert types to numpy
         if not type(lower) == np.array:
             lower = np.array(lower)
@@ -89,7 +95,8 @@ class RegionGridSampler:
 
         # Init none var
         next = None
-        while (True):
+        found_soln = False
+        while (not found_soln):
 
             # Get next point in deterministic sequence
             next = self.grid_sampler_.next()
@@ -97,5 +104,68 @@ class RegionGridSampler:
             # Break out if this point is inside region,
             # otherwise continue in sequence
             if self.cyl.isInside(next):
-                break
+                found_soln = True
         return next
+
+
+class RegionGridConfigSampler:
+
+    def __init__(self, cyl: Cyl, res: np.array, kinematic_solver: Ur5Kinematics, region_validity: Callable):
+
+        self.grid_sampler_ = RegionGridSampler(cyl, res)
+        self.validity_ = region_validity
+        self.rng_ = default_rng()
+        self.kinematic_solver_ = kinematic_solver
+        self.queue = deque()
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self.next()
+
+    def next(self):
+
+        # If we have queued configuration solutions, return them
+        if len(self.queue) != 0:
+            return self.queue.popleft()
+
+        # Otherwise, queue is empty, get next workspace point and
+        # queue all joint solutions
+        else:
+            found_soln = False
+            while (not found_soln):
+
+                # Sample grid poing inside region
+                pt = self.grid_sampler_.next()
+
+                # Sample valid orientation
+                orien = tf.randomQuaternion(top_half_sphere=True)
+
+                # Construct transform to target
+                target = self.grid_sampler_.cyl.world_to_center_tf * \
+                    tf.toTransform(pt, orien)
+
+                # We care about the EE tool colliding with the region
+                # so we call this just to throw out orientations that aren't useful
+                # First, call IK on the target
+                joint_configs = self.kinematic_solver_.inverse(target)
+
+                if joint_configs is not None and len(joint_configs) != 0:
+
+                    # Call the region_validity function on the first joint config
+                    valid = self.validity_(joint_configs[0])
+
+                    # IK solution doesn't put tool in contact with region collision
+                    # objects, add joint solutions to queue
+                    if valid:
+
+                        # Add results to queue if they exist,
+                        for config in joint_configs:
+                            self.queue.append(config)
+
+                        # Break out of loop
+                        found_soln = True
+
+                # otherwise repeat
+            return self.queue.popleft()

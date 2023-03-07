@@ -10,7 +10,7 @@ class Ur5Kinematics:
 
     def __init__(self, ee_to_tool_tip_tf=toTransform([0, 0, 0], [0, 0, 0]),
                  world_to_base_tf=toTransform([0, 0, 0], [0, 0, 0]),
-                 verbose=True):
+                 verbose=False):
         self.ur5_kin_ = ur5_ikfast.PyKinematics("ur5")
         self.n_dofs = self.ur5_kin_.getDOF()
         self.verbose = verbose
