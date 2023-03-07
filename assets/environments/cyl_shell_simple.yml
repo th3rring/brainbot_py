@@ -1,0 +1,9 @@
+world:
+  collision_objects:
+    - id: table_right
+      meshes:
+        - resource: "package://objects/cyl_shell_0.25_0.5_vhacd.obj"
+          dimensions: [1, 1, 1]
+      mesh_poses:
+        - position: [0, 0, 1.1]
+          orientation: [0, 0, 0, 1]
