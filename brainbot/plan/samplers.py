@@ -1,7 +1,9 @@
+import math
 from .regions import Cyl
 from brainbot.utils import tf
 from brainbot.kinematics import Ur5Kinematics
 from brainbot.viz import markers
+from brainbot.constants import PI
 
 import numpy as np
 from numpy.random import default_rng
@@ -107,6 +109,65 @@ class RegionGridSampler:
                 found_soln = True
         return next
 
+class RegionSurfaceSampler:
+    """
+    This class is used to sample points on the surface of a region.
+     
+    The region is assumed to be a cylinder, and the points are sampled  """
+
+    def __init__(self, cyl: Cyl, res: np.array):
+        """Constructor for RegionSurfaceSampler
+
+        Args:
+            cyl (Cyl): The cylinder to sample points on
+            res (np.array): The resolution of the grid to sample points on. Assumes first element is the circumfrence resolution, and the second element is the height circumfrence resolution. Third element is square grid resolution for the top and bottom of the cylinder.
+        """
+
+        self.cyl = cyl
+        self.res = res
+        self.queue = deque()
+
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self.next()
+
+    def next(self):
+
+        # If we have queued points, return them
+        if len(self.queue) != 0:
+            return self.queue.popleft()
+        else:
+            delta_angle = 2 * PI / self.res[0]
+            delta_height = self.cyl.height * 2 / (self.res[1] - 1)
+
+            for h in range(0, self.res[1]):
+                # Inside the middle of the cylinder, sample points on the circumference
+                if h != 0 and h != self.res[1] - 1:
+                    z = h * delta_height - self.cyl.height
+                    for i in range(self.res[0]):
+                        angle = i * delta_angle
+
+                        # TODO Doesn't really matter, but this could be more efficient
+                        x = self.cyl.radius * math.cos(angle)
+                        y = self.cyl.radius * math.sin(angle)
+                        self.queue.append([x, y, z])
+                        
+                # Otherwise, we are at the top or bottom of the cylinder
+                else:
+                    for i in range(self.res[2]):
+                        for j in range(self.res[2]):
+                            x = i * (2 * self.cyl.radius) / (self.res[2] - 1) - self.cyl.radius
+                            y = j * (2 * self.cyl.radius) / (self.res[2] - 1) - self.cyl.radius
+                            z = h * delta_height - self.cyl.height
+                            
+                            if x**2 + y**2 <= self.cyl.radius:
+                                self.queue.append([x, y, z])
+                    
+            # Return next element
+            return self.queue.popleft()
 
 class RegionGridConfigSampler:
 
@@ -166,6 +227,73 @@ class RegionGridConfigSampler:
 
                         # Break out of loop
                         found_soln = True
+
+                # otherwise repeat
+            return self.queue.popleft()
+
+class RegionSurfaceConfigSampler:
+
+    def __init__(self, cyl: Cyl, res: np.array, kinematic_solver: Ur5Kinematics):
+
+        self.surface_sampler_ = RegionSurfaceSampler(cyl, res)
+        
+        # Not checking state validity for surface samples
+        # They'll collide with the region collision objects
+        # self.validity_ = region_validity
+
+        self.rng_ = default_rng()
+        self.kinematic_solver_ = kinematic_solver
+        self.queue = deque()
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self.next()
+
+    def next(self):
+
+        # If we have queued configuration solutions, return them
+        if len(self.queue) != 0:
+            return self.queue.popleft()
+
+        # Otherwise, queue is empty, get next workspace point and
+        # queue all joint solutions
+        else:
+            found_soln = False
+            while (not found_soln):
+
+                # Sample grid poing inside region
+                pt = self.surface_sampler_.next()
+
+                # Sample valid orientation
+                orien = tf.randomQuaternion(top_half_sphere=True)
+
+                # Construct transform to target
+                target = self.surface_sampler_.cyl.world_to_center_tf * \
+                    tf.toTransform(pt, orien)
+
+                # We care about the EE tool colliding with the region
+                # so we call this just to throw out orientations that aren't useful
+                # First, call IK on the target
+                joint_configs = self.kinematic_solver_.inverse(target)
+
+                if joint_configs is not None and len(joint_configs) != 0:
+
+                    # Removed, see comment in constructor
+                    # Call the region_validity function on the first joint config
+                    # valid = self.validity_(joint_configs[0])
+
+                    # IK solution doesn't put tool in contact with region collision
+                    # objects, add joint solutions to queue
+                    # if valid:
+
+                    # Add results to queue if they exist,
+                    for config in joint_configs:
+                        self.queue.append(config)
+
+                    # Break out of loop
+                    found_soln = True
 
                 # otherwise repeat
             return self.queue.popleft()
