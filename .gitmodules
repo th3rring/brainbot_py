@@ -9,7 +9,7 @@
 	url = https://github.com/andyzeng/ikfastpy.git
 [submodule "submodules/ur_ikfast"]
 	path = submodules/ur_ikfast
-	url = https://github.com/cambel/ur_ikfast.git
+	url = git@github.com:th3rring/ur_ikfast.git
 [submodule "submodules/hypertools"]
 	path = submodules/hypertools
-	url = https://github.com/ContextLab/hypertools.git
+	url = git@github.com:th3rring/hypertools.git
