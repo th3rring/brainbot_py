@@ -10,3 +10,6 @@
 [submodule "submodules/ur_ikfast"]
 	path = submodules/ur_ikfast
 	url = https://github.com/cambel/ur_ikfast.git
+[submodule "submodules/hypertools"]
+	path = submodules/hypertools
+	url = https://github.com/ContextLab/hypertools.git
