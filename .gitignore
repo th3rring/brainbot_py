@@ -29,3 +29,15 @@ notebooks/.ipynb_checkpoints/Grid Samplers-checkpoint.ipynb
 notebooks/.ipynb_checkpoints/TestMoveit-checkpoint.ipynb
 notebooks/.ipynb_checkpoints/TestTFs-checkpoint.ipynb
 notebooks/.ipynb_checkpoints/start_jupyter-checkpoint.sh
+
+.virtual_documents/notebooks/Mixtures.ipynb
+.virtual_documents/notebooks/Untitled.ipynb
+.vscode/launch.json
+brainbot/constants/__pycache__/__init__.cpython-310.pyc
+brainbot/constants/__pycache__/math.cpython-310.pyc
+brainbot/plan/__pycache__/__init__.cpython-310.pyc
+brainbot/plan/__pycache__/regions.cpython-310.pyc
+brainbot/plan/__pycache__/samplers.cpython-310.pyc
+notebooks/.ipynb_checkpoints/Mixtures-checkpoint.ipynb
+notebooks/.ipynb_checkpoints/Surface Samplers-checkpoint.ipynb
+notebooks/.ipynb_checkpoints/Visualize-checkpoint.ipynb
