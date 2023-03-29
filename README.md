@@ -5,14 +5,15 @@ Brainbot Py is a Python library that provides an interface for running OMPL moti
 
 ## Features
 
-- Easy integration with PyBullet for robot simulation
-- Utilizes OMPL for motion planning
-- Custom samplers for primitive workspace geometries
-- Deterministic robot C-Space samplers for workspace pointclouds
+- Integration with PyBullet - through Grapeshot - for robot simulation
+- Utilizes OMPL for motion planning for a UR5 robot
+- Analytical inverse and forward kinematics solver
+- Position samplers for primitive workspace geometries
+- Deterministic robot C-Space samplers for workspace regions
 
 ## Installation
 
-To install Brainbot Py as an editable library, simply run the following command:
+To install Brainbot Py as an editable developer library, simply run the following command:
 
 ```bash
 pip install -e .
