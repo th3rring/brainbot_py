@@ -14,7 +14,7 @@ import grapeshot as gs
 def main(
         planner_name: str = "RRTConnect",
         planning_time: float = 1.,
-        visualize: bool = False
+        visualize: bool = True
     ):
     robot_name = "ur5_tool"
     group_name = "manipulator"
@@ -25,7 +25,7 @@ def main(
 
     world = gs.model.World(visualize)
     robot = world.add_robot(robot_path / f"{robot_name}.urdf", robot_path / f"{robot_name}.srdf")
-    env = world.add_environment_yaml(asset_path / "environments" / "table_simple.yml")
+    env = world.add_environment(asset_path / "environments" / "table_simple.yml")
     world.configure_acm()
 
     context = gs.ompl.get_OMPL_context(world, [(robot, group_name)], planner_name)

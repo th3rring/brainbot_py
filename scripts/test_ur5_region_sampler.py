@@ -2,9 +2,6 @@ import sys
 import time
 from pathlib import Path
 
-# sys.path.insert(0, "/home/zak/src/ompl/py-bindings")
-# sys.path.insert(0, "/home/zak/src/ompl/build/lib")
-
 from fire import Fire
 
 import numpy as np
@@ -13,8 +10,6 @@ from ompl import base as ob
 
 import grapeshot as gs
 import pybullet as pb
-
-import ur5_ikfast
 
 from brainbot.kinematics import solvers
 from brainbot.plan.regions import Cyl
@@ -71,6 +66,16 @@ def main(
 
     # Create Ur5 Kinematics obj
     ur5_kin = solvers.Ur5Kinematics(tool_tip_to_ee_t.inv(), world_to_base_t)
+
+    print("tool to to ee:")
+    print(tool_tip_to_ee_t.pos)
+    print(tool_tip_to_ee_t.quaternion)
+    print("----")
+    print("world to base:")
+    print(world_to_base_t.pos)
+    print(world_to_base_t.quaternion)
+    print("----")
+
 
     # Create cylinder
     cyl = Cyl(0.25, 0.5, tf.toTransform([0, 0, 1.1], [0, 0, 0]))

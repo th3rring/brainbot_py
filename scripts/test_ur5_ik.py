@@ -36,28 +36,29 @@ def main(
 
     world = gs.model.World(visualize)
     robot = world.add_robot(robot_path / f"{robot_name}.urdf", robot_path / f"{robot_name}.srdf")
-    world.configure_acm()
+    world.setup_collision_filter()
 
     # Create planning context to get joint indicies
     planner_name  = "RRTConnect"
-    context = gs.ompl.get_OMPL_context(world, [(robot, group_name)], planner_name)
+    context = gs.planning.get_OMPL_context(world, [robot.groups[group_name]], planner_name)
 
     # Set initial configuration
-    initial_config=[-3.1,1.6,1.6,-1.6,-1.6,0.]
-    world.set_world_positions(context.indices,initial_config)
+    initial_config=np.array([-3.1,1.6,1.6,-1.6,-1.6,0.])
+    world.set_group_positions(robot.groups[group_name],initial_config)
 
+    # TODO API has completely changed. Rewrite these scripts after making a block diagram of the workflow.
 
     # Get offset transform from tool_tip frame to ee_link grame
-    ee_link_state = world.sim.getLinkState(robot.skel.id, robot.skel.links["ee_link"], computeForwardKinematics=True)
+    ee_link_state = world.sim.getLinkState(robot.skel.id, robot.skel.get_link("ee_link").index, computeForwardKinematics=True)
     world_to_ee_t = tf.toTransform(ee_link_state[4],ee_link_state[5])
 
 
     # Get robot base transform
-    base_state = world.sim.getLinkState(robot.skel.id, robot.skel.links["base_link"], computeForwardKinematics=True)
+    base_state = world.sim.getLinkState(robot.skel.id, robot.skel.get_link("base_link").index, computeForwardKinematics=True)
     world_to_base_t = tf.toTransform(base_state[4], base_state[5])
 
 
-    tool_tip_state = pb.getLinkState(robot.skel.id, robot.skel.links["tool_tip"], computeForwardKinematics=True)
+    tool_tip_state = pb.getLinkState(robot.skel.id, robot.skel.get_link("tool_tip").index, computeForwardKinematics=True)
     world_to_tool_tip_t = tf.toTransform(tool_tip_state[4], tool_tip_state[5])
     tool_tip_triad = markers.displayTriad(world.sim, world_to_tool_tip_t)
 
@@ -98,11 +99,8 @@ def main(
     joint_configs = np.asarray(joint_configs).reshape(n_solutions, n_joints)
     for joint_config in joint_configs:
         print(joint_config)
-        world.set_world_positions(context.indices,joint_config)
+        world.set_group_positions(robot.groups[group_name],joint_config)
         input("...")
-
-
-
 
 
     # Call IK and set each one
